@@ -13,6 +13,12 @@ def valid_register_user_data():
         'password': 'password',
     }
 
+@pytest.fixture(scope="function", autouse=True)
+def valid_login_user_data():
+    return {
+        'email': 'qq@mail.ru',
+        'password': '123123',
+    }
 
 @pytest.fixture(scope="function")
 def driver():
