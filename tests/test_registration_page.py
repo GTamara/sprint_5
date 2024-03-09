@@ -6,6 +6,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 import helper_funcs
 from constants.locators import Locators
 from constants.urls import Urls
+from constants.constants import Constants
 
 
 class TestRegistrationPage:
@@ -13,7 +14,7 @@ class TestRegistrationPage:
     @staticmethod
     def get_registration_page(driver: WebDriver):
         driver.get(Urls.REGISTER_PAGE_URL)
-        WebDriverWait(driver, 10).until(
+        WebDriverWait(driver, Constants.TIMEOUT).until(
             expected_conditions.visibility_of_element_located(
                 Locators.REGISTRATION_PAGE_PASSWORD_FIELD
             )
@@ -29,7 +30,7 @@ class TestRegistrationPage:
     def register_success(self, driver, data):
         self.get_registration_page(driver)
         self.fill_and_submit_registration_form(driver, data)
-        WebDriverWait(driver, 10).until(
+        WebDriverWait(driver, Constants.TIMEOUT).until(
             expected_conditions.presence_of_element_located(Locators.LOGIN_PAGE_HEADING)
         )
         x = driver.current_url
@@ -80,7 +81,7 @@ class TestRegistrationPage:
         }
         self.get_registration_page(driver)
         self.fill_and_submit_registration_form(driver, data)
-        WebDriverWait(driver, 10).until(
+        WebDriverWait(driver, Constants.TIMEOUT).until(
             expected_conditions.text_to_be_present_in_element(
                 Locators.REGISTRATION_PAGE_PASSWORD_FIELD_ERROR_TEXT,
                 'Некорректный пароль'
