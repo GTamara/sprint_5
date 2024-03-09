@@ -10,7 +10,10 @@ from shared_methods import SharedMethods
 
 class TestLogin:
 
-    def login_success(self, driver: WebDriver, valid_login_user_data):
+    # позитивный сценарий логина. Проверяем, что после логина произошел переход на главную страницу
+    # и в профиле указан правильный email
+    @staticmethod
+    def login_success(driver: WebDriver, valid_login_user_data):
         SharedMethods.fill_and_submit_login_form(driver, valid_login_user_data)
         WebDriverWait(driver, Constants.TIMEOUT).until(
             expected_conditions.visibility_of_element_located(
@@ -27,10 +30,12 @@ class TestLogin:
         assert driver.find_element(*Locators.PROFILE_LOGIN_FIELD).get_attribute('value') \
                == valid_login_user_data['email']
 
+    # Логин со страницы логина
     def test_login_from_login_page_valid_user_data_success(self, driver: WebDriver, valid_login_user_data):
         driver.get(Urls.LOGIN_PAGE_URL)
         self.login_success(driver, valid_login_user_data)
 
+    # Для незалогиненного пользователя клик по ссылке Аккаунт ведет на страницу логина
     def test_login_from_account_link_valid_user_data_success(self, driver: WebDriver, valid_login_user_data):
         driver.get(Urls.ORIGIN)
         WebDriverWait(driver, Constants.TIMEOUT).until(
@@ -41,6 +46,7 @@ class TestLogin:
         driver.find_element(*Locators.TOOLBAR_NAV_ACCOUNT_LINK).click()
         self.login_success(driver, valid_login_user_data)
 
+    # На странице регистрации клик по ссылке авторизации ведет на страницу логина
     def test_login_from_registration_page_valid_user_data_success(self, driver: WebDriver, valid_login_user_data):
         driver.get(Urls.REGISTER_PAGE_URL)
         WebDriverWait(driver, Constants.TIMEOUT).until(
@@ -51,6 +57,7 @@ class TestLogin:
         driver.find_element(*Locators.REGISTRATION_PAGE_LOGIN_LINK).click()
         self.login_success(driver, valid_login_user_data)
 
+    # На странице восстановленияпароля клик по ссылке авторизации ведет на страницу логина
     def test_login_from_reset_password_page_valid_user_data_success(self, driver: WebDriver, valid_login_user_data):
         driver.get(Urls.RESET_PASSWORD_PAGE_URL)
         WebDriverWait(driver, Constants.TIMEOUT).until(
