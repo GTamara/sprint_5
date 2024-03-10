@@ -1,7 +1,5 @@
-import time
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
-from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
 from constants.locators import Locators
@@ -33,9 +31,11 @@ class TestConstructor:
         current_heading_element: WebElement = driver.find_element(*current_heading_locator)
         ingredients_container: WebElement = driver.find_element(*Locators.CONSTRUCTOR_INGREDIENTS_CONTAINER)
         driver.find_element(*current_tab_locator).click()
-        # ждем, пока закончится анимация скролла, которая запускается по клику на таб
-        time.sleep(0.8)
-        assert current_heading_element.location['y'] == ingredients_container.location['y']
+
+        WebDriverWait(driver, Constants.TIMEOUT).until(
+            lambda _: current_heading_element.location['y'] == ingredients_container.location['y']
+        )
+        assert current_heading_element.location['y'] - ingredients_container.location['y'] == 0
 
     # клик по табу Начинки скроллит вверх заголовок Начинки
     def test_fillings_scrolls_to_top_when_filling_tab_is_clicked(self, driver, logged_in_user):
