@@ -46,3 +46,20 @@ class SharedMethods:
                 Locators.PROFILE_MENU_PROFILE_LINK
             )
         )
+
+    @staticmethod
+    def is_constructor_page(driver: WebDriver):
+        WebDriverWait(driver, Constants.TIMEOUT).until(
+            expected_conditions.visibility_of_element_located(
+                Locators.CONSTRUCTOR_PAGE_HEADING
+            )
+        )
+        return (
+            len(
+                driver.find_elements(*Locators.CONSTRUCTOR_INGREDIENTS_CONTAINER)
+            ) == 1
+            and
+            len(
+                driver.find_elements(*Locators.CONSTRUCTOR_BASKET)
+            ) == 1
+        )

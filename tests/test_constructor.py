@@ -11,31 +11,17 @@ from shared_methods import SharedMethods
 
 class TestConstructor:
 
-    @staticmethod
-    def is_constructor_page(driver: WebDriver):
-        WebDriverWait(driver, Constants.TIMEOUT).until(
-            expected_conditions.visibility_of_element_located(
-                Locators.CONSTRUCTOR_PAGE_HEADING
-            )
-        )
-        assert len(
-            driver.find_elements(*Locators.CONSTRUCTOR_INGREDIENTS_CONTAINER)
-        ) == 1
-        assert len(
-            driver.find_elements(*Locators.CONSTRUCTOR_BASKET)
-        ) == 1
-
-    # переход в конструктор по клику на ссылку Конструктор
+    # Переход в конструктор по клику на ссылку Конструктор
     def test_go_to_constructor_from_profile_by_clicking_on_constructor_link(self, driver: WebDriver, logged_in_user):
         SharedMethods.go_to_profile(driver)
         driver.find_element(*Locators.TOOLBAR_NAV_CONSTRUCTOR_LINK).click()
-        self.is_constructor_page(driver)
+        assert SharedMethods.is_constructor_page(driver)
 
     # переход в конструктор по клику на Логотип
     def test_go_to_constructor_from_profile_by_clicking_on_logo(self, driver: WebDriver, logged_in_user):
         SharedMethods.go_to_profile(driver)
         driver.find_element(*Locators.LOGO).click()
-        self.is_constructor_page(driver)
+        assert SharedMethods.is_constructor_page(driver)
 
     # клик по табу скроллит вверх соответствующий заголовок списка ингредиентов
     @staticmethod
