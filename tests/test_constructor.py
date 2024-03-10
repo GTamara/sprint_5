@@ -80,7 +80,6 @@ class TestConstructor:
             containerScrollHeight = arguments[0].scrollHeight
             arguments[0].scrollTo({ top: containerScrollHeight, left:0, behavior: "instant"})
         ''', ingredients_container)
-        # time.sleep(10)
         self.check_whether_ingredients_list_scrolls_to_their_heading_when_the_tab_is_clicked(
             driver,
             buns_tab_locator,

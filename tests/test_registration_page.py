@@ -7,6 +7,7 @@ import helper_funcs
 from constants.locators import Locators
 from constants.urls import Urls
 from constants.constants import Constants
+from data.register_data import valid_register_user_data
 
 
 class TestRegistrationPage:
@@ -36,23 +37,23 @@ class TestRegistrationPage:
         WebDriverWait(driver, Constants.TIMEOUT).until(
             expected_conditions.presence_of_element_located(Locators.LOGIN_PAGE_HEADING)
         )
-        assert '/login' in driver.current_url
+        return '/login' in driver.current_url
 
     # регистрация с валидным форматом email
-    def test_register_valid_format_email_success(self, driver, valid_register_user_data):
+    def test_register_valid_format_email_success(self, driver):
         data = {
             **valid_register_user_data,
             'email': helper_funcs.generate_email(10)
         }
-        self.register_success(driver, data)
+        assert self.register_success(driver, data)
 
     # регистрация с непустым именем
-    def test_register_non_empty_name_success(self, driver: WebDriver, valid_register_user_data: dict[str, str]):
+    def test_register_non_empty_name_success(self, driver: WebDriver):
         data = {
             **valid_register_user_data,
             'name': helper_funcs.generate_random_string(5)
         }
-        self.register_success(driver, data)
+        assert self.register_success(driver, data)
 
     # регистрация с валидным паролем > 5 символов
     @pytest.mark.parametrize(
@@ -63,12 +64,12 @@ class TestRegistrationPage:
             helper_funcs.generate_password(10),  # 10 symbols,
         ]
     )
-    def test_register_more_than_5_symbols_password_success(self, driver, valid_register_user_data, password):
+    def test_register_more_than_5_symbols_password_success(self, driver, password):
         data = {
             **valid_register_user_data,
             'password': password
         }
-        self.register_success(driver, data)
+        assert self.register_success(driver, data)
 
     # регистрация с НЕвалидным паролем < 5 символов
     @pytest.mark.parametrize(
@@ -80,7 +81,7 @@ class TestRegistrationPage:
             helper_funcs.generate_password(5),  # 5 symbols,
         ]
     )
-    def test_register_less_than_6_symbols_password_failure(self, password, driver, valid_register_user_data):
+    def test_register_less_than_6_symbols_password_failure(self, password, driver):
         data = {
             **valid_register_user_data,
             'password': password
@@ -97,7 +98,7 @@ class TestRegistrationPage:
         assert '/register' in driver.current_url
 
     # регистрация с пустым паролем
-    def test_register_empty_password_failure(self, driver, valid_register_user_data):
+    def test_register_empty_password_failure(self, driver):
         data = {
             **valid_register_user_data,
             'password': ''
